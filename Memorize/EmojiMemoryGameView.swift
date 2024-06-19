@@ -12,7 +12,7 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame  // point to our viewmodel
     
     
-   
+    
     var body: some View {
         VStack {
             ScrollView {
@@ -36,49 +36,45 @@ struct EmojiMemoryGameView: View {
         .foregroundColor(.green)
     }
     
-   
+    
 }
+
+
+
+
+struct CardView: View{
+    let card: MemoryGame<String>.Card
     
-    
-    
-    
-    struct CardView: View{
-        let card: MemoryGame<String>.Card
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
+    }
+    var body: some View{
         
-        init(_ card: MemoryGame<String>.Card) {
-            self.card = card
-        }
-        var body: some View{
-            
-            ZStack {
-                let base = RoundedRectangle(cornerRadius: 12)
-                Group {
-                    base.fill(.white)
-                    base.strokeBorder(lineWidth: 2)
-                    Text(card.content)
-                        .font(.system(size: 200))
-                        .minimumScaleFactor(0.01)
-                        .aspectRatio(1, contentMode: .fit)
-                }
-                    .opacity(card.isFaceUp ? 1: 0)
-                base.fill()
-                    .opacity(card.isFaceUp ? 0 : 1)
+        ZStack {
+            let base = RoundedRectangle(cornerRadius: 12)
+            Group {
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 2)
+                Text(card.content)
+                    .font(.system(size: 200))
+                    .minimumScaleFactor(0.01)
+                    .aspectRatio(1, contentMode: .fit)
             }
-            
-            
+            .opacity(card.isFaceUp ? 1: 0)
+            base.fill()
+                .opacity(card.isFaceUp ? 0 : 1)
         }
+        
+        
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    struct EmojiMemoryGameView_Previews: PreviewProvider {
-        static var previews: some View {
-            EmojiMemoryGameView(viewModel: EmojiMemoryGame())
-        }
+}
+
+
+
+
+struct EmojiMemoryGameView_Previews: PreviewProvider {
+    static var previews: some View {
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
     }
+}
 

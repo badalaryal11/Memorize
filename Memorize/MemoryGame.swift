@@ -8,7 +8,7 @@
 import Foundation
 
 struct MemoryGame<CardContent> {
-   private(set) var cards: Array<Card>
+    private(set) var cards: Array<Card>
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = []
