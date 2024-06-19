@@ -8,24 +8,24 @@
 import SwiftUI
 
 
-    
+
 
 class EmojiMemoryGame: ObservableObject { // reactive UI
-   private static let emojis = ["👻", "🎃", "🕷", "👹", "👹", "😍", "🤑", "😡", "😃", "😛","😜"]
-
-   
-   private static func createMemoryGame() -> MemoryGame<String> {
-       return  MemoryGame(numberOfPairsOfCards: 6) { pairIndex in
-           if emojis.indices.contains(pairIndex){
-               return emojis[pairIndex]
-           }
-           else {
-               return "⁉️"
-           }
+    private static let emojis = ["👻", "🎃", "🕷", "👹", "👹", "😍", "🤑", "😡", "😃", "😛","😜","🤡","🇳🇵"]
+    
+    
+    private static func createMemoryGame() -> MemoryGame<String> {
+        return  MemoryGame(numberOfPairsOfCards: 16) { pairIndex in
+            if emojis.indices.contains(pairIndex){
+                return emojis[pairIndex]
+            }
+            else {
+                return "⁉️"
+            }
         }
     }
     
-  
+    
     
     @Published private var model = createMemoryGame()
     
@@ -37,10 +37,10 @@ class EmojiMemoryGame: ObservableObject { // reactive UI
     
     func shuffle() {
         model.shuffle()
-       
+        
         
     }
-    // intent function: Users intent to choose the function 
+    // intent function: Users intent to choose the function
     func choose(_ card: MemoryGame<String>.Card) {
         model.choose(card)
     }
