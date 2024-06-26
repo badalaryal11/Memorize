@@ -29,7 +29,7 @@ struct EmojiMemoryGameView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100), spacing: 0)], spacing: 0) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60), spacing: 0)], spacing: 0) {
             ForEach(viewModel.cards) { card in
                 
                     CardView(card)
@@ -75,6 +75,7 @@ struct CardView: View{
             base.fill()
                 .opacity(card.isFaceUp ? 0 : 1)
         }
+        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
         
         
     }

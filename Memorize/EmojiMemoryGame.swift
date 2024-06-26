@@ -12,11 +12,11 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
     // classes get a free initializers but their initializers have no arguments
-    private static let emojis = ["👻", "🎃", "🕷", "👹", "👹", "😍", "🤑", "😡", "😃", "😛","😜","🤡","🇳🇵","💀","🤖","🌏"] // static: make emoji global but namespace it inside the class  and private make it only for us to use
+    private static let emojis = ["👻", "🎃", "🕷", "👹", "😡", "😃", "😜","🤡","🇳🇵","💀","🤖","🌏"] // static: make emoji global but namespace it inside the class  and private make it only for us to use
     
     
     private static func createMemoryGame() -> MemoryGame<String> {
-        return  MemoryGame(numberOfPairsOfCards: 18) { pairIndex in
+        return  MemoryGame(numberOfPairsOfCards: 16) { pairIndex in
             if emojis.indices.contains(pairIndex){
                 return emojis[pairIndex]
             }

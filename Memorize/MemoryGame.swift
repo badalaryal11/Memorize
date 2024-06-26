@@ -21,19 +21,32 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    mutating func choose(_ card: Card) {
-        let chosenIndex = index(of:card)
-        cards[chosenIndex].isFaceUp.toggle()
+    var indexOfTheOneAndOnlyFaceupCard: Int? {
+        // computed property
+        get {  cards.indices.filter{ index in cards[index].isFaceUp}.only }
+            // look and find if there is one faceup card
+        set {  cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
+        //for each card indicies we are going to set value that is either be that we set as or false
     }
     
-    func index(of card: Card) -> Int {
-        for index in cards.indices {
-            if cards[index].id == card.id{
-                return index
+    mutating func choose(_ card: Card) {
+        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id }){
+            if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
+                if let potentialMatchIndex = indexOfTheOneAndOnlyFaceupCard {
+                    if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                        cards[chosenIndex].isMatched = true
+                        cards[potentialMatchIndex].isMatched = true
+                        }
+                } else {
+                    indexOfTheOneAndOnlyFaceupCard = chosenIndex
+                }
+                cards[chosenIndex].isFaceUp = true
             }
+            
         }
-        return 0    // FIXME: bogus!
     }
+    
+    
     
     
     mutating func shuffle() { // Any  function that modifies model have to be marked mutating
@@ -42,11 +55,11 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-       
         
-       
         
-        var isFaceUp = true
+        
+        
+        var isFaceUp = false
         var isMatched = false
         let content: CardContent
         
@@ -54,5 +67,11 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         var debugDescription: String {
             return "\(id) \(content) \(isFaceUp ? "up": "down")\(isMatched ? " matched" : "")"
         }
+    }
+}
+
+extension Array {
+    var only: Element? {
+        return count == 1 ? first : nil
     }
 }
