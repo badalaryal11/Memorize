@@ -10,6 +10,7 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame  // point to our viewmodel
+    //@ObservedObject says if this thing says something has changed redraw me.
     
     
     
@@ -20,6 +21,7 @@ struct EmojiMemoryGameView: View {
                     .animation(.default, value: viewModel.cards)
             }
             Button("Shuffle") {
+                
                 viewModel.shuffle() // intent of user
             }
         }
@@ -27,7 +29,7 @@ struct EmojiMemoryGameView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100), spacing: 0)], spacing: 0) {
             ForEach(viewModel.cards) { card in
                 
                     CardView(card)
@@ -51,6 +53,7 @@ struct EmojiMemoryGameView: View {
 
 
 struct CardView: View{
+    
     let card: MemoryGame<String>.Card
     
     init(_ card: MemoryGame<String>.Card) {
@@ -82,7 +85,7 @@ struct CardView: View{
 
 struct EmojiMemoryGameView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame()) // set var viewmodel
     }
 }
 

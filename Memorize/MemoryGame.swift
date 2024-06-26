@@ -1,17 +1,18 @@
 //
 //  MemorizeGame.swift
 //  Memorize
-//
+//  Model
 //  Created by Badal  Aryal on 13/06/2024.
 //
 
 import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
-    private(set) var cards: Array<Card>
+    private(set) var cards: Array<Card> // private makes 'acess control' limit to this class only and set only let setting the variable is private but looking at it is allowed.
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
-        cards = []
+        cards = [] // empty array
+        
         // add numberOfPairsOfCards x 2 cards
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content = cardContentFactory(pairIndex)
@@ -35,7 +36,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     
-    mutating func shuffle() {
+    mutating func shuffle() { // Any  function that modifies model have to be marked mutating
         cards.shuffle()
         print(cards)
     }
