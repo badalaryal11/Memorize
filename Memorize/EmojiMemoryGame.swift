@@ -16,7 +16,7 @@ class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
     
     
     private static func createMemoryGame() -> MemoryGame<String> {
-        return  MemoryGame(numberOfPairsOfCards: 16) { pairIndex in
+        return  MemoryGame(numberOfPairsOfCards: 10) { pairIndex in
             if emojis.indices.contains(pairIndex){
                 return emojis[pairIndex]
             }
@@ -45,5 +45,11 @@ class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
     // intent function: Users intent to choose the function
     func choose(_ card: MemoryGame<String>.Card) {
         model.choose(card)
+    }
+}
+
+struct Previews_EmojiMemoryGame_Previews: PreviewProvider {
+    static var previews: some View {
+        Text("Game Over!")
     }
 }
