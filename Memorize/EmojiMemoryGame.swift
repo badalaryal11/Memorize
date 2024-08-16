@@ -12,6 +12,7 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
     // classes get a free initializers but their initializers have no arguments
+    typealias Card = MemoryGame<String>.Card
     private static let emojis = ["👻", "🎃", "🕷", "👹", "😡", "😃", "😜","🤡","🇳🇵","💀","🤖","🌏"] // static: make emoji global but namespace it inside the class  and private make it only for us to use
     
     
@@ -31,7 +32,7 @@ class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
     @Published private var model = createMemoryGame() // @Published on var says if this var changes something has changed
         // private means view cannot see it but can cause something to change 
     
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: Array<Card> {
         return model.cards
     }
     
@@ -43,13 +44,9 @@ class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
         
     }
     // intent function: Users intent to choose the function
-    func choose(_ card: MemoryGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
     }
 }
 
-struct Previews_EmojiMemoryGame_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("Game Over!")
-    }
-}
+
