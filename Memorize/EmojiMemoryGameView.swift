@@ -12,11 +12,12 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame  // point to our viewmodel
     //@ObservedObject says if this thing says something has changed redraw me.
     private let aspectRatio: CGFloat = 2/3
-    
+    private let spacing: CGFloat = 4
     
     var body: some View {
         VStack {
             cards
+                .foregroundColor(viewModel.color)
                 .animation(.default, value: viewModel.cards)
             Button("Shuffle") {
                 viewModel.shuffle() // intent of user
@@ -30,7 +31,7 @@ struct EmojiMemoryGameView: View {
         AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) { card in
             
             return CardView(card)
-                .padding(4)
+                .padding(spacing)
                 .onTapGesture {
                     viewModel.choose(card)
                     

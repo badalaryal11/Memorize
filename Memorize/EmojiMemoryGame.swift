@@ -33,7 +33,11 @@ class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
         // private means view cannot see it but can cause something to change 
     
     var cards: Array<Card> {
-        return model.cards
+         model.cards
+    }
+    
+    var color: Color {
+         .green
     }
     
     //MARK: - Intents
