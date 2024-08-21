@@ -40,6 +40,9 @@ class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
          .green
     }
     
+    var score: Int {
+        model.score
+    }
     //MARK: - Intents
     
     func shuffle() {

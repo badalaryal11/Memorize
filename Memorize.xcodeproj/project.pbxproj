@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		58075E7E2C662C7400081F3E /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58075E7D2C662C7400081F3E /* AspectVGrid.swift */; };
+		580A9F8B2C766219006B4C22 /* FlyingNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580A9F8A2C766219006B4C22 /* FlyingNumber.swift */; };
 		582F97BB2C1B687100B05C8B /* MemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582F97BA2C1B687100B05C8B /* MemoryGame.swift */; };
 		5832D8962C6FB4270099A0E5 /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5832D8952C6FB4270099A0E5 /* Pie.swift */; };
 		5832D8982C6FCAD20099A0E5 /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5832D8972C6FCAD20099A0E5 /* Cardify.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		58075E7D2C662C7400081F3E /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		580A9F8A2C766219006B4C22 /* FlyingNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingNumber.swift; sourceTree = "<group>"; };
 		582F97BA2C1B687100B05C8B /* MemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGame.swift; sourceTree = "<group>"; };
 		5832D8952C6FB4270099A0E5 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = SOURCE_ROOT; };
 		5832D8972C6FCAD20099A0E5 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				5832D8952C6FB4270099A0E5 /* Pie.swift */,
 				583780932C049C8600E53446 /* MemorizeApp.swift */,
 				583780952C049C8600E53446 /* EmojiMemoryGameView.swift */,
+				580A9F8A2C766219006B4C22 /* FlyingNumber.swift */,
 				58D269D82C6A025400C295E4 /* CardView.swift */,
 				5832D8972C6FCAD20099A0E5 /* Cardify.swift */,
 				58075E7D2C662C7400081F3E /* AspectVGrid.swift */,
@@ -157,6 +160,7 @@
 			files = (
 				583780962C049C8600E53446 /* EmojiMemoryGameView.swift in Sources */,
 				583780942C049C8600E53446 /* MemorizeApp.swift in Sources */,
+				580A9F8B2C766219006B4C22 /* FlyingNumber.swift in Sources */,
 				5832D8982C6FCAD20099A0E5 /* Cardify.swift in Sources */,
 				582F97BB2C1B687100B05C8B /* MemoryGame.swift in Sources */,
 				58075E7E2C662C7400081F3E /* AspectVGrid.swift in Sources */,

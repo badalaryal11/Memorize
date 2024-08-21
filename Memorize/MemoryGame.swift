@@ -9,7 +9,7 @@ import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card> // private makes 'acess control' limit to this class only and set only let setting the variable is private but looking at it is allowed.
-    
+    private(set) var score = 0
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = [] // empty array
         
@@ -36,7 +36,15 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
+                        score += 2
+                    }   else {
+                        if cards[chosenIndex].hasBeenSeen {
+                            score -= 1
                         }
+                        if cards[potentialMatchIndex].hasBeenSeen {
+                            score -= 1
+                        }
+                    }
                 } else {
                     indexOfTheOneAndOnlyFaceupCard = chosenIndex
                 }
@@ -55,11 +63,15 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-        
-        
-        
-        
-        var isFaceUp = true
+        var isFaceUp = false {
+            // property observers
+            didSet {
+                if oldValue && !isFaceUp {
+                    hasBeenSeen = true
+                }
+            }
+        }
+        var hasBeenSeen = false
         var isMatched = false
         let content: CardContent
         
