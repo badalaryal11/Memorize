@@ -13,6 +13,7 @@ import SwiftUI
 class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
     // classes get a free initializers but their initializers have no arguments
     typealias Card = MemoryGame<String>.Card
+    //let skyBlue = Color(red: 0.4627, green: 0.8392, blue: 1.0)
     private static let emojis = ["👻", "🎃", "🕷", "👹", "😡", "😃", "😜","🤡","🇳🇵","💀","🤖","🌏"] // static: make emoji global but namespace it inside the class  and private make it only for us to use
     
     
@@ -31,13 +32,14 @@ class EmojiMemoryGame: ObservableObject { // ObservableObject: reactive UI
     
     @Published private var model = createMemoryGame() // @Published on var says if this var changes something has changed
         // private means view cannot see it but can cause something to change 
-    
+    let linkColor = Color(uiColor: .link)
+
     var cards: Array<Card> {
          model.cards
     }
     
     var color: Color {
-         .green
+        .purple
     }
     
     var score: Int {

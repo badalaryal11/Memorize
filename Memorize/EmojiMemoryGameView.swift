@@ -15,6 +15,7 @@ struct EmojiMemoryGameView: View {
     private let aspectRatio: CGFloat = 2/3
     private let spacing: CGFloat = 4
     
+    
     var body: some View {
         VStack {
             cards
@@ -50,13 +51,26 @@ struct EmojiMemoryGameView: View {
                 .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
                 .onTapGesture {
                     withAnimation {
+                        //update var everytime score changes
+                        let scoreBeforeChoosing = viewModel.score
                         viewModel.choose(card)
+                        let scoreChange = viewModel.score - scoreBeforeChoosing
+                        lastScoreChange = (scoreChange, card.id)
                     }
                 }
         }
     }
+    
+    //tuple to get track of lastscore change
+    @State private var lastScoreChange = (0, causedByCardId:"")
+        
+    
     private func scoreChange(causedBy card: Card) -> Int {
-        return 0
+        //implent lastscore change
+        // get values out of tuple
+        let (amount, id) = lastScoreChange
+        return card.id == id ? amount : 0
+        
     }
 }
 
