@@ -28,7 +28,6 @@ struct FlyingNumber: View {
                 .onDisappear {
                     offset = 0
                 }
-                .zIndex(scoreChange(causedBy: card) != 0 ? 100 : 0)
         }
     }
 }
