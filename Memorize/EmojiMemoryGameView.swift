@@ -14,16 +14,18 @@ struct EmojiMemoryGameView: View {
     //@ObservedObject says if this thing says something has changed redraw me.
     private let aspectRatio: CGFloat = 2/3
     private let spacing: CGFloat = 4
+    private let dealInterval: TimeInterval = 0.15
+    private let dealAnimation: Animation =  .easeInOut(duration: 1)
+    private let deckWidth: CGFloat = 50
     
     
     var body: some View {
         VStack {
-            cards
-                .foregroundColor(viewModel.color)
+            cards.foregroundColor(viewModel.color)
             HStack {
                 score
                 Spacer()
-                deck
+                deck.foregroundColor(viewModel.color)
                 Spacer()
                 shuffle
             }
@@ -50,15 +52,14 @@ struct EmojiMemoryGameView: View {
         AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) { card in
             if isDealt(card) {
                 CardView(card)
+                    .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                    .transition(.asymmetric(insertion: .identity, removal: .identity))
                     .padding(spacing)
                     .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
                     .onTapGesture {
                         choose(card)
                     }
-                    .transition(.offset(
-                        x:CGFloat.random(in: -1000...1000),
-                        y:CGFloat.random(in: -1000...1000)
-                    ))
+                    
             }
         }
         
@@ -73,29 +74,34 @@ struct EmojiMemoryGameView: View {
         viewModel.cards.filter{ !isDealt($0)}
     }
     
+    @Namespace private var dealingNamespace
+    
     private var deck: some View {
         ZStack {
             ForEach(undealtCards) { card in
                 CardView(card)
-                    .transition(.offset(
-                        x:CGFloat.random(in: -1000...1000),
-                        y:CGFloat.random(in: -1000...1000)
-                    ))
-                
-            }
+                    .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+
+                }
         }
         .frame(width: deckWidth, height: deckWidth / aspectRatio)
         .onTapGesture {
-            // deal the cards
-            withAnimation(.easeInOut(duration: 2)) {
-                for card in viewModel.cards {
-                    dealt.insert(card.id)
-                }
-            }
-            
+            deal()
         }
     }
-    private let deckWidth: CGFloat = 50
+    
+    private func deal() {
+        // deal the cards
+        var delay: TimeInterval = 0
+        for card in viewModel.cards {
+            withAnimation(dealAnimation.delay(delay)) {
+                _ = dealt.insert(card.id)
+            }
+            delay += dealInterval
+        }
+        
+    }
     
     private func choose(_ card: Card) {
         withAnimation {
