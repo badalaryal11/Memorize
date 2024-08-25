@@ -2,17 +2,18 @@
 //  MemorizeGame.swift
 //  Memorize
 //  Model
-//  Created by Badal  Aryal on 13/06/2024.
+//  Created by Badal Aryal on 13/06/2024.
+//
 //
 
 import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
-    private(set) var cards: Array<Card> // private makes 'acess control' limit to this class only and set only let setting the variable is private but looking at it is allowed.
+    private(set) var cards: Array<Card>
     private(set) var score = 0
+    
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
-        cards = [] // empty array
-        
+        cards = []
         // add numberOfPairsOfCards x 2 cards
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content = cardContentFactory(pairIndex)
@@ -21,23 +22,20 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    var indexOfTheOneAndOnlyFaceupCard: Int? {
-        // computed property
-        get {  cards.indices.filter{ index in cards[index].isFaceUp}.only }
-            // look and find if there is one faceup card
-        set {  cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
-        //for each card indicies we are going to set value that is either be that we set as or false
+    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+        get { cards.indices.filter { index in cards[index].isFaceUp }.only }
+        set { cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
     }
     
     mutating func choose(_ card: Card) {
-        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id }){
+        if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
             if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
-                if let potentialMatchIndex = indexOfTheOneAndOnlyFaceupCard {
+                if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
                         score += 2 + cards[chosenIndex].bonus + cards[potentialMatchIndex].bonus
-                    }   else {
+                    } else {
                         if cards[chosenIndex].hasBeenSeen {
                             score -= 1
                         }
@@ -46,30 +44,23 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                         }
                     }
                 } else {
-                    indexOfTheOneAndOnlyFaceupCard = chosenIndex
+                    indexOfTheOneAndOnlyFaceUpCard = chosenIndex
                 }
                 cards[chosenIndex].isFaceUp = true
             }
-            
         }
     }
     
-    
-    
-    
-    mutating func shuffle() { // Any  function that modifies model have to be marked mutating
+    mutating func shuffle() {
         cards.shuffle()
-        print(cards)
     }
     
-    struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
+    struct Card: Equatable, Identifiable, CustomStringConvertible {
         var isFaceUp = false {
-            // property observers
             didSet {
                 if isFaceUp {
                     startUsingBonusTime()
-                }
-                else {
+                } else {
                     stopUsingBonusTime()
                 }
                 if oldValue && !isFaceUp {
@@ -78,73 +69,71 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             }
         }
         var hasBeenSeen = false
-        var isMatched = false
+        var isMatched = false {
             didSet {
                 if isMatched {
-                stopUsingBonusTime()
+                    stopUsingBonusTime()
+                }
             }
         }
-    }
         let content: CardContent
         
         var id: String
-        var debugDescription: String {
-            return "\(id) \(content) \(isFaceUp ? "up": "down")\(isMatched ? " matched" : "")"
+        var description: String {
+            "\(id): \(content) \(isFaceUp ? "up" : "down")\(isMatched ? " matched" : "")"
         }
+        
+        // MARK: - Bonus Time
+        
+        // call this when the card transitions to face up state
+        private mutating func startUsingBonusTime() {
+            if isFaceUp && !isMatched && bonusPercentRemaining > 0, lastFaceUpDate == nil {
+                lastFaceUpDate = Date()
+            }
+        }
+        
+        // call this when the card goes back face down or gets matched
+        private mutating func stopUsingBonusTime() {
+            pastFaceUpTime = faceUpTime
+            lastFaceUpDate = nil
+        }
+        
+        // the bonus earned so far (one point for every second of the bonusTimeLimit that was not used)
+        // this gets smaller and smaller the longer the card remains face up without being matched
+        var bonus: Int {
+            Int(bonusTimeLimit * bonusPercentRemaining)
+        }
+        
+        // percentage of the bonus time remaining
+        var bonusPercentRemaining: Double {
+            bonusTimeLimit > 0 ? max(0, bonusTimeLimit - faceUpTime)/bonusTimeLimit : 0
+        }
+        
+        // how long this card has ever been face up and unmatched during its lifetime
+        // basically, pastFaceUpTime + time since lastFaceUpDate
+        var faceUpTime: TimeInterval {
+            if let lastFaceUpDate {
+                return pastFaceUpTime + Date().timeIntervalSince(lastFaceUpDate)
+            } else {
+                return pastFaceUpTime
+            }
+        }
+        
+        // can be zero which would mean "no bonus available" for matching this card quickly
+        var bonusTimeLimit: TimeInterval = 6
+        
+        // the last time this card was turned face up
+        var lastFaceUpDate: Date?
+        
+        // the accumulated time this card was face up in the past
+        // (i.e. not including the current time it's been face up if it is currently so)
+        var pastFaceUpTime: TimeInterval = 0
     }
 }
-
-// MARK: - Bonus Time
-
-// call this when the card transitions to face up state
-private mutating func startUsingBonusTime() {
-    if isFaceUp && !isMatched && bonusPercentRemaining > 0, lastFaceUpDate == nil {
-        lastFaceUpDate = Date()
-    }
-}
-
-// call this when the card goes back face down or gets matched
-private mutating func stopUsingBonusTime() {
-    pastFaceUpTime = faceUpTime
-    lastFaceUpDate = nil
-}
-
-// the bonus earned so far (one point for every second of the bonusTimeLimit that was not used)
-// this gets smaller and smaller the longer the card remains face up without being matched
-var bonus: Int {
-    Int(bonusTimeLimit * bonusPercentRemaining)
-}
-
-// percentage of the bonus time remaining
-var bonusPercentRemaining: Double {
-    bonusTimeLimit > 0 ? max(0, bonusTimeLimit - faceUpTime)/bonusTimeLimit : 0
-}
-
-// how long this card has ever been face up and unmatched during its lifetime
-// basically, pastFaceUpTime + time since lastFaceUpDate
-var faceUpTime: TimeInterval {
-    if let lastFaceUpDate {
-        return pastFaceUpTime + Date().timeIntervalSince(lastFaceUpDate)
-    } else {
-        return pastFaceUpTime
-    }
-}
-
-// can be zero which would mean "no bonus available" for matching this card quickly
-var bonusTimeLimit: TimeInterval = 6
-
-// the last time this card was turned face up
-var lastFaceUpDate: Date?
-
-// the accumulated time this card was face up in the past
-// (i.e. not including the current time it's been face up if it is currently so)
-var pastFaceUpTime: TimeInterval = 0
-}
-}
-
 
 extension Array {
     var only: Element? {
-        return count == 1 ? first : nil
+        count == 1 ? first : nil
     }
 }
+
