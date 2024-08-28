@@ -1,3 +1,4 @@
+# Memorize
 * Description - This is an iOS card game in which users have to match cards by memorizing it and
 get a score if the match is successful.
 * Technologies Used : Swift, SwiftUI, MVVM, Animation
