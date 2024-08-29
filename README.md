@@ -5,6 +5,5 @@ get a score if the match is successful.
 * Features: Match cards by memorizing it and get a score if the match is successful and lose score on sucessive unsucessful attempt.
 * Contribution: Developed the User interface using SwiftUI, Optimized the app for smooth experience, followed MVVM design pattern.
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ff788405-eb00-40d0-b769-72191e05a3ee" alt="Alt Text" width="200"/>
+  <img src="https://github.com/user-attachments/assets/4fc7ccbf-7310-4174-8e45-6a101e0ad3ab" alt="Alt Text" width="200"/>
 </p>
-()
